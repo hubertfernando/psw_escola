@@ -5,5 +5,5 @@ from django.forms import ModelForm
 class DisciplinaForm(ModelForm):
     class Meta:
         model = Disciplina
-        fields = ['nome']
+        fields = ['nome', 'carga_horaria']
         

@@ -20,36 +20,36 @@ def detalha(request, id_disciplina):
 
 # View que cria novas disciplinas
 @login_required
-@permission_required('disciplina.add_categoria', raise_exception=True)
+@permission_required('disciplina.add_disciplina', raise_exception=True)
 def cria(request):
     if request.method == 'POST':
-        form = CategoriaForm(request.POST)
+        form = DisciplinaForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("/disciplina/")
     else:
-        form = CategoriaForm()
+        form = DisciplinaForm()
     return render(request, 'disciplina/cria.html', {'form': form})
 
 
 # View que edita uma disciplina
 @login_required
-@permission_required('disciplina.change_categoria', raise_exception=True)
+@permission_required('disciplina.change_disciplina', raise_exception=True)
 def atualiza(request, id_disciplina):
     disciplina = Disciplina.objects.get(id=id_disciplina)
     if request.method == 'POST':
-        form = CategoriaForm(request.POST, instance=disciplina)
+        form = DisciplinaForm(request.POST, instance=disciplina)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("/disciplina/")
     else:
-        form = CategoriaForm(instance=disciplina)
+        form = DisciplinaForm(instance=disciplina)
     return render(request, 'disciplina/atualiza.html', {'form': form})
 
 
 # View que deleta uma disciplina
 @login_required
-@permission_required('disciplina.delete_categoria', raise_exception=True)
+@permission_required('disciplina.delete_disciplina', raise_exception=True)
 def delete(request, id_disciplina):
     disciplina = Disciplina.objects.get(id=id_disciplina)
     disciplina.delete()
