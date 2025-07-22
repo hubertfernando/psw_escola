@@ -1,0 +1,44 @@
+<div class="text-center">
+    <h3 class="mb-4">Listagem geral de pessoas</h3>
+    <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0 text-primary">
+            <i class="bi bi-people-fill me-2"></i>Listagem de Pessoas
+        </h2>
+        {% if perms.pessoa.add_pessoa %}
+        <a href="/disciplina/add" class="btn btn-success">
+            <i class="bi bi-plus-lg me-2"></i>Criar
+        </a>
+        {% endif %}
+    </div>
+    <div class="table-responsive d-flex justify-content-center">
+        <table class="table table-bordered shadow" style="width: 85%;">
+            <thead class="thead-light">
+                <tr>
+                    <th> Nome </th>
+                    <th> Matricula </th>
+                    <th> Turma </th>
+                    {% if perms.disciplina.detail_disciplina %}<th> Detalhe </th>{% endif %}
+                    {% if perms.disciplina.detail_disciplina %}<th> Atualizar </th>{% endif %}
+                    {% if perms.disciplina.detail_disciplina %}<th> Deletar </th>{% endif %}
+                </tr>
+            </thead> 
+            <tbody>
+                {% for disciplina in disciplinas %}
+                <tr>
+                    <td> {{ disciplina.nome }} </td>
+                    <td> {{ disciplina.matricula }} </td>
+                    <td> {{ disciplina.turma }} </td>
+                    
+                    
+                   
+                    <td><a href="/disciplina/{{disciplina.id}}/"> Detalhe</a></td>
+                    <td><a href="/disciplina/edit/{{disciplina.id}}/"> Atualizar</a></td>
+                    <td><a href="/disciplina/delete/{{disciplina.id}}/"> Deletar</a></td>
+                  
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

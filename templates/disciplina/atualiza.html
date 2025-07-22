@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Atualizar Dados</title>
+</head>
+<body>
+
+<div class="form-container" role="form" aria-label="Formulário de Atualização">
+    <h2>Atualizar Dados</h2>
+    <form method="POST" action="" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        
+        {{ form.as_p }} 
+        <div class="form-buttons">
+            <input type="button" value="Cancelar" onclick="window.history.back();" aria-label="Cancelar">
+            <input type="submit" value="Atualizar" aria-label="Atualizar formulário">
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
