@@ -18,10 +18,10 @@ def detalha(request, id_disciplina):
     return render(request, 'disciplina/detalha.html', {'disciplina': disciplina})
 
 
-# View que cria novas disciplinas
+# View que create novas disciplinas
 @login_required
 @permission_required('disciplina.add_categoria', raise_exception=True)
-def cria(request):
+def create(request):
     if request.method == 'POST':
         form = CategoriaForm(request.POST)
         if form.is_valid():
@@ -29,7 +29,7 @@ def cria(request):
             return HttpResponseRedirect("/disciplina/")
     else:
         form = CategoriaForm()
-    return render(request, 'disciplina/cria.html', {'form': form})
+    return render(request, 'disciplina/create.html', {'form': form})
 
 
 # View que edita uma disciplina
