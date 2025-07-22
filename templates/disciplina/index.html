@@ -16,6 +16,7 @@
             <thead class="thead-light">
                 <tr>
                     <th> Nome </th>
+                    <th> Carga Horária </th>
                 
                     {% if perms.disciplina.detail_disciplina %}<th> Detalhe </th>{% endif %}
                     {% if perms.disciplina.detail_disciplina %}<th> Atualizar </th>{% endif %}
@@ -26,6 +27,7 @@
                 {% for disciplina in disciplinas %}
                 <tr>
                     <td> {{ disciplina.nome }} </td>
+                    <td> {{ disciplina.carga_horaria }} </td>
                     
                     
                    
