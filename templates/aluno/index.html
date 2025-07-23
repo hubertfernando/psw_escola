@@ -6,7 +6,7 @@
             <i class="bi bi-people-fill me-2"></i>Listagem de Pessoas
         </h2>
         {% if perms.pessoa.add_pessoa %}
-        <a href="/aluno/add" class="btn btn-success">
+        <a href="/aluno/cria" class="btn btn-success">
             <i class="bi bi-plus-lg me-2"></i>Criar
         </a>
         {% endif %}
@@ -17,7 +17,7 @@
                 <tr>
                     <th> Nome </th>
                     <th> Matricula </th>
-                    <th> Turma </th>
+                  
                     {% if perms.aluno.detail_aluno %}<th> Detalhe </th>{% endif %}
                     {% if perms.aluno.detail_aluno %}<th> Atualizar </th>{% endif %}
                     {% if perms.aluno.detail_aluno %}<th> Deletar </th>{% endif %}
@@ -28,12 +28,12 @@
                 <tr>
                     <td> {{ aluno.nome }} </td>
                     <td> {{ aluno.matricula }} </td>
-                    <td> {{ aluno.turma }} </td>
+                   
                     
                     
                    
                     <td><a href="/aluno/{{aluno.id}}/"> Detalhe</a></td>
-                    <td><a href="/aluno/edit/{{aluno.id}}/"> Atualizar</a></td>
+                    <td><a href="/aluno/atualiza/{{aluno.id}}/"> Atualizar</a></td>
                     <td><a href="/aluno/delete/{{aluno.id}}/"> Deletar</a></td>
                   
                 </tr>

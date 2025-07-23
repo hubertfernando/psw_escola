@@ -4,7 +4,7 @@ from .models import Aluno
 from .forms import AlunoForm, AlunoEditForm
 from django.contrib.auth.decorators import login_required, permission_required
 
-# View que lista todas os alunos cadastrados
+# View que lista todos os alunos cadastrados
 @login_required
 @permission_required('aluno.view_alunos', raise_exception=True)
 def index(request):
@@ -20,7 +20,7 @@ def detalha(request, id_alunos):
 
 # View para criar aluno
 @login_required
-@permission_required('aluno.add_alunos', raise_exception=True)
+@permission_required('aluno.cria_alunos', raise_exception=True)
 def cria(request):
     if request.method == 'POST':
         form = AlunoForm(request.POST)
@@ -33,7 +33,7 @@ def cria(request):
 
 # View para editar alunos
 @login_required
-@permission_required('aluno.change_alunos', raise_exception=True)
+@permission_required('aluno.atualiza_alunos', raise_exception=True)
 def atualiza(request, id_alunos):
     aluno = Aluno.objects.get(id=id_alunos)
     if request.method == 'POST':
@@ -47,7 +47,7 @@ def atualiza(request, id_alunos):
 
 # View para excluir um aluno
 @login_required
-@permission_required('aluno.delete_alunos', raise_exception=True)
-def delete(request, id_alunos):
-    Aluno.objects.get(id=id_alunos).delete()
+@permission_required('aluno.delete_aluno', raise_exception=True)
+def delete(request, id_aluno):
+    Aluno.objects.get(id=id_aluno).delete()
     return HttpResponseRedirect("/aluno/")
