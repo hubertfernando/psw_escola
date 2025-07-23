@@ -51,6 +51,5 @@ def atualiza(request, id_disciplina):
 @login_required
 @permission_required('disciplina.delete_disciplina', raise_exception=True)
 def delete(request, id_disciplina):
-    disciplina = Disciplina.objects.get(id=id_disciplina)
-    disciplina.delete()
+    Disciplina.objects.get(id=id_disciplina).delete()
     return HttpResponseRedirect("/disciplina/")

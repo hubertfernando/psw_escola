@@ -14,8 +14,8 @@ def index(request):
 # View que mostra os detalhes de um aluno
 @login_required
 @permission_required('aluno.detail_alunos', raise_exception=True)
-def detalha(request, id_alunos):
-    aluno = Aluno.objects.get(id=id_alunos) 
+def detalha(request, id_aluno):
+    aluno = Aluno.objects.get(id=id_aluno) 
     return render(request, 'aluno/detalha.html', {'aluno': aluno})
 
 # View para criar aluno
@@ -33,9 +33,9 @@ def cria(request):
 
 # View para editar alunos
 @login_required
-@permission_required('aluno.atualiza_alunos', raise_exception=True)
-def atualiza(request, id_alunos):
-    aluno = Aluno.objects.get(id=id_alunos)
+@permission_required('aluno.change_aluno', raise_exception=True)
+def atualiza(request, id_aluno):
+    aluno = Aluno.objects.get(id=id_aluno)
     if request.method == 'POST':
         form = AlunoEditForm(request.POST, instance=aluno)
         if form.is_valid():
