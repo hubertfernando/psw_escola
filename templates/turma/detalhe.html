@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detalhes da Turma</title>
+</head>
+<body>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Ano</th>
+            <th>Curso</th>
+            <th>Líder</th>
+            <th>Data de criação</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ turma.get_curso_display }}</td>
+            <td>{{ turma.get_ano_display }}</td>
+            <td>{{ turma.lider }}</td>
+            <td>{{ turma.data_criacao|date:"d/m/Y H:i" }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<a href="/turma/">Voltar</a>
+
+</body>
+</html>

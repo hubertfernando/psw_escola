@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Formulário de Cadastro</title>
+</head>
+<body>
+
+<div role="form" aria-label="Formulário de Cadastro">
+    <h2>Preencha o Formulário</h2>
+   <form method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+
+    <div>
+        <input type="button" value="Cancelar" onclick="window.history.back();" aria-label="Cancelar" />
+        <input type="submit" value="Enviar" aria-label="Enviar formulário" />
+    </div>
+</form>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Detalhes da Atividade</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+        th {
+            background-color: #e9ecef;
+        }
+        a.btn-voltar {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a.btn-voltar:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Detalhes da Atividade</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+            <th>Data de criação</th>
+            <th>Data de entrega</th>
+            <th>Arquivo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ atividade.titulo }}</td>
+            <td>{{ atividade.descricao }}</td>
+            <td>{{ atividade.data_criacao|date:"d/m/Y H:i" }}</td>
+            <td>{{ atividade.data_entrega|date:"d/m/Y H:i" }}</td>
+            <td>
+                {% if atividade.arquivo %}
+                    <a href="{{ atividade.arquivo.url }}" target="_blank">Download</a>
+                {% else %}
+                    Sem arquivo
+                {% endif %}
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<a href="/atividade/" class="btn-voltar">Voltar</a>
+
+</body>
+</html>
