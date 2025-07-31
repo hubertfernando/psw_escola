@@ -1,44 +1,71 @@
-<div class="text-center">
-    <h3 class="mb-4">Listagem geral de pessoas</h3>
-    <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0 text-primary">
-            <i class="bi bi-people-fill me-2"></i>Listagem de Pessoas
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5">
+  <div class="card shadow-lg border-0">
+    <div class="card-body">
+
+      <!-- Título e botão Criar -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary mb-0">
+          <i class="bi bi-people-fill me-2"></i>Listagem de Alunos
         </h2>
         {% if perms.pessoa.add_pessoa %}
-        <a href="/aluno/cria" class="btn btn-success">
-            <i class="bi bi-plus-lg me-2"></i>Criar
+        <a href="/aluno/cria" class="btn btn-success shadow-sm">
+          <i class="bi bi-plus-lg me-2"></i>Criar Aluno
         </a>
         {% endif %}
-    </div>
-    <div class="table-responsive d-flex justify-content-center">
-        <table class="table table-bordered shadow" style="width: 85%;">
-            <thead class="thead-light">
-                <tr>
-                    <th> Nome </th>
-                    <th> Matricula </th>
-                  
-                    {% if perms.aluno.detail_aluno %}<th> Detalhe </th>{% endif %}
-                    {% if perms.aluno.detail_aluno %}<th> Atualizar </th>{% endif %}
-                    {% if perms.aluno.detail_aluno %}<th> Deletar </th>{% endif %}
-                </tr>
-            </thead> 
-            <tbody>
-                {% for aluno in alunos %}
-                <tr>
-                    <td> {{ aluno.nome }} </td>
-                    <td> {{ aluno.matricula }} </td>
-                   
-                    
-                    
-                   
-                    <td><a href="/aluno/{{aluno.id}}/"> Detalhe</a></td>
-                    <td><a href="/aluno/atualiza/{{aluno.id}}/"> Atualizar</a></td>
-                    <td><a href="/aluno/delete/{{aluno.id}}/"> Deletar</a></td>
-                  
-                </tr>
-                {% endfor %}
-            </tbody>
+      </div>
+
+      <!-- Tabela responsiva -->
+      <div class="table-responsive">
+        <table class="table table-hover align-middle text-center table-bordered border-light shadow-sm">
+          <thead class="table-primary">
+            <tr>
+              <th>Nome</th>
+              <th>Matrícula</th>
+              {% if perms.aluno.detail_aluno %}<th>Detalhes</th>{% endif %}
+              {% if perms.aluno.detail_aluno %}<th>Atualizar</th>{% endif %}
+              {% if perms.aluno.detail_aluno %}<th>Deletar</th>{% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for aluno in alunos %}
+            <tr>
+              <td>{{ aluno.nome }}</td>
+              <td>{{ aluno.matricula }}</td>
+
+              {% if perms.aluno.detail_aluno %}
+              <td>
+                <a href="/aluno/{{ aluno.id }}/" class="btn btn-outline-info btn-sm">
+                  <i class="bi bi-eye"></i> Ver
+                </a>
+              </td>
+              <td>
+                <a href="/aluno/atualiza/{{ aluno.id }}/" class="btn btn-outline-warning btn-sm">
+                  <i class="bi bi-pencil-square"></i> Editar
+                </a>
+              </td>
+              <td>
+                <a href="/aluno/delete/{{ aluno.id }}/" class="btn btn-outline-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar este aluno?');">
+                  <i class="bi bi-trash"></i> Excluir
+                </a>
+              </td>
+              {% endif %}
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="5" class="text-muted">Nenhum aluno cadastrado.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
         </table>
+      </div>
+
     </div>
+  </div>
 </div>
+
+{% endblock %}
