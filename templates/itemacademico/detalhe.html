@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do Item</title>
+    <style>
+        body { font-family: Arial; margin: 20px; background: #f8f9fa; color: #333; }
+        table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 2px 6px #ccc; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background: #eee; }
+        .btn { margin-top: 15px; display: inline-block; padding: 8px 12px; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px; }
+        .btn:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+
+<h2>Detalhes do Item</h2>
+
+<table>
+    <tr><th>Título</th><td>{{ itemacademico.titulo }}</td></tr>
+    <tr><th>Descrição</th><td>{{ itemacademico.descricao }}</td></tr>
+    <tr><th>Tipo</th><td>{{ itemacademico.get_tipo_display }}</td></tr>
+    <tr><th>Data de Criação</th><td>{{ itemacademico.data_criacao|date:"d/m/Y H:i" }}</td></tr>
+
+    {% if itemacademico.tipo == "ATIVIDADE" and itemacademico.atividade %}
+        <tr>
+            <th>Data de Entrega</th>
+            <td>{{ itemacademico.atividade.data_entrega|date:"d/m/Y H:i" }}</td>
+        </tr>
+    {% endif %}
+
+    <tr>
+        <th>Arquivo</th>
+        <td>
+            {% if itemacademico.arquivo %}
+                <a href="{{ itemacademico.arquivo.url }}" target="_blank">Download</a>
+            {% else %}
+                Sem arquivo
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
+<a href="/itemacademico/" class="btn">Voltar</a>
+
+</body>
+</html>
