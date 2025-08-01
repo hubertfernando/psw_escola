@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Atualizar Item Acadêmico</title>
+</head>
+<body>
+
+<div class="form-container" role="form" aria-label="Formulário de Atualização">
+    <h2>Atualizar Item Acadêmico</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="form-buttons">
+            <button type="button" onclick="window.history.back();" aria-label="Cancelar">Cancelar</button>
+            <button type="submit" aria-label="Atualizar formulário">Atualizar</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
