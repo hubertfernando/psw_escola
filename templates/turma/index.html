@@ -130,18 +130,22 @@
                         <tr>
                             <td> {{ turma.get_ano_display }} {{ turma.get_curso_display }}</td>
                             <td class="text-nowrap">
-                                <a href="/turma/{{ turma.id }}" class="btn btn-secondary btn-sm me-1" title="Detalhar">
+                                 <a href="/turma/{{ turma.id }}/" class="btn btn-secondary btn-sm me-1" title="Detalhar">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                <a href="/turma/add" class="btn btn-primary btn-sm me-1" title="Criar">
+
+                                <a href="/turma/add/" class="btn btn-primary btn-sm me-1" title="Criar">
                                     <i class="bi bi-plus"></i>
                                 </a>
-                                <a href="/turma/update/{{ turma.id }}" class="btn btn-warning btn-sm me-1 text-dark" title="Editar">
+
+                                </a>
+                                <a href="/turma/edit/{{ turma.id }}/" class="btn btn-warning btn-sm me-1 text-dark" title="Editar">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <a href="/turma/delete/{{ turma.id }}" class="btn btn-danger btn-sm" title="Excluir">
+                                <a href="/turma/delete/{{ turma.id }}/" class="btn btn-danger btn-sm" title="Excluir">
                                     <i class="bi bi-trash"></i>
                                 </a>
+
                             </td>
                         </tr>
                         {% empty %}
