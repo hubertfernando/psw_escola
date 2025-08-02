@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'disciplina',
     'aluno',
     'itemacademico',
-    'turma',
     'crispy_forms',
     'crispy_bootstrap5',
 ]
@@ -135,3 +134,6 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 
+LOGIN_REDIRECT_URL = '/aluno/'
+LOGOUT_REDIRECT_URL = '/conta/login/'
+LOGIN_URL = '/conta/login/'
