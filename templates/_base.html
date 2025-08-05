@@ -95,7 +95,14 @@
                       <i class="ti ti-list-check fs-6"></i>
                       <p class="mb-0 fs-3">My Task</p>
                     </a>
-                    <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                    <!-- Botão de logout apenas para usuários logados no sistema -->
+                    {% if user.is_authenticated %}
+                     <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</button>
+                     </form>
+                    {% endif %}
+
                   </div>
                 </div>
               </li>
