@@ -1,196 +1,101 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Cadastro de Item Acadêmico</title>
-    <style>
-        /* Mantenha seus estilos CSS aqui */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        h2 {
-            color: #0056b3;
-            margin-bottom: 20px;
-        }
-        form {
-            background-color: #fff;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin: auto;
-        }
-        form div {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="text"],
-        input[type="date"],
-        textarea,
-        select {
-            width: calc(100% - 22px);
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        input[type="file"] {
-            padding: 5px 0;
-        }
-        button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1em;
-            margin-right: 10px;
-        }
-        button[type="submit"] {
-            background-color: #28a745;
-            color: white;
-        }
-        button[type="button"] {
-            background-color: #6c757d;
-            color: white;
-        }
-        .errorlist {
-            color: #dc3545;
-            list-style-type: none;
-            padding: 0;
-            margin-top: 5px;
-            margin-bottom: 10px;
-        }
-    </style>
-    <script>
-        function atualizarCampoDataEntrega() {
-            const tipoSelect = document.getElementById('id_tipo');
-            const tipo = tipoSelect ? tipoSelect.value : '';
-            const campoDataDiv = document.querySelector('.campo-data-entrega');
+{% extends "_base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
 
-            if (campoDataDiv) {
-                // Mostra o campo se o tipo for ATIVIDADE, esconde caso contrário.
-                campoDataDiv.style.display = (tipo === 'ATIVIDADE') ? 'block' : 'none';
-                
-            }
-        }
+{% block content %}
+<div class="container py-5">
+  <div class="card border-0 shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0">Cadastrar Item Acadêmico</h3>
+    </div>
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const tipoSelect = document.getElementById('id_tipo');
-            const tipoSelecionado = "{{ tipo_selecionado|default:'' }}";
-
-            if (tipoSelect) {
-                if (tipoSelecionado) {
-                    tipoSelect.value = tipoSelecionado;
-                } else {
-                    // Se não houver tipo pré-selecionado (e.g., primeira carga),
-                    // tenta pegar o valor atual do select para a inicialização
-                    // Isso é importante se você tem um valor padrão no select.
-                    // Ou pode definir um valor padrão se não quiser que ele comece vazio
-                    // tipoSelect.value = 'ATIVIDADE'; // Exemplo para começar com Atividade
-                }
-
-                // Chame a função para definir o estado inicial correto assim que a página carrega.
-                // Isso é CRUCIAL para garantir que o campo data_entrega apareça se for uma Atividade
-                // ou se o tipo já estiver selecionado ao carregar.
-                atualizarCampoDataEntrega();
-
-                // Adicione o listener para mudanças futuras no select
-                tipoSelect.addEventListener('change', atualizarCampoDataEntrega);
-            }
-        });
-    </script>
-</head>
-<body>
-
-    <h2>Cadastrar Item Acadêmico</h2>
-
-    <form method="POST" enctype="multipart/form-data">
+    <div class="card-body">
+      <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-
+        
         {% if form.non_field_errors %}
-            <div class="errorlist">
-                {% for error in form.non_field_errors %}
-                    <p>{{ error }}</p>
-                {% endfor %}
-            </div>
+          <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+              <p class="mb-0">{{ error }}</p>
+            {% endfor %}
+          </div>
         {% endif %}
 
-        <div>
-            {{ form.tipo.label_tag }}
-            {{ form.tipo }}
-            {% if form.tipo.errors %}
-                <ul class="errorlist">
-                    {% for error in form.tipo.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-        <div>
-            {{ form.titulo.label_tag }}
-            {{ form.titulo }}
-            {% if form.titulo.errors %}
-                <ul class="errorlist">
-                    {% for error in form.titulo.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-        <div>
-            {{ form.descricao.label_tag }}
-            {{ form.descricao }}
-            {% if form.descricao.errors %}
-                <ul class="errorlist">
-                    {% for error in form.descricao.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-        <div>
-            {{ form.arquivo.label_tag }}
-            {{ form.arquivo }}
-            {% if form.arquivo.errors %}
-                <ul class="errorlist">
-                    {% for error in form.arquivo.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+        <div class="mb-3">
+          {{ form.tipo.label_tag }}
+          {{ form.tipo }}
+          {% for error in form.tipo.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
         </div>
 
-        {# O campo data_entrega só existe no AtividadeForm. #}
-        {# A condição `if form.data_entrega` verifica se o campo está presente no formulário atual. #}
-        {# A classe `campo-data-entrega` é usada pelo JavaScript para mostrar/esconder. #}
-        {# Removi o display:none inicial AQUI, para que o JS o controle no DOMContentLoaded #}
+        <div class="mb-3">
+          {{ form.titulo.label_tag }}
+          {{ form.titulo }}
+          {% for error in form.titulo.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.descricao.label_tag }}
+          {{ form.descricao }}
+          {% for error in form.descricao.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.arquivo.label_tag }}
+          {{ form.arquivo }}
+          {% for error in form.arquivo.errors %}
+            <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+
         {% if form.data_entrega %}
-            <div class="campo-data-entrega"> 
-                {{ form.data_entrega.label_tag }}
-                {{ form.data_entrega }}
-                {% if form.data_entrega.errors %}
-                    <ul class="errorlist">
-                        {% for error in form.data_entrega.errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
+          <div class="mb-3 campo-data-entrega">
+            {{ form.data_entrega.label_tag }}
+            {{ form.data_entrega }}
+            {% for error in form.data_entrega.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
         {% endif %}
 
-        <div>
-            <button type="button" onclick="window.history.back()">Cancelar</button>
-            <button type="submit">Enviar</button>
+        <div class="mt-4 d-flex justify-content-between">
+          <a href="/itemacademico/" class="btn btn-secondary" aria-label="Cancelar criação">
+            <i class="bi bi-x-circle me-1"></i> Cancelar
+          </a>
+          <button type="submit" class="btn btn-success" aria-label="Enviar item">
+            <i class="bi bi-check-circle me-1"></i> Enviar
+          </button>
         </div>
-    </form>
+      </form>
+    </div>
+  </div>
+</div>
 
-</body>
-</html>
+<script>
+  function atualizarCampoDataEntrega() {
+    const tipoSelect = document.getElementById('id_tipo');
+    const campoDataDiv = document.querySelector('.campo-data-entrega');
+    if (campoDataDiv) {
+      campoDataDiv.style.display = (tipoSelect && tipoSelect.value === 'ATIVIDADE') ? 'block' : 'none';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const tipoSelect = document.getElementById('id_tipo');
+    const tipoSelecionado = "{{ tipo_selecionado|default:'' }}";
+
+    if (tipoSelect) {
+      if (tipoSelecionado) {
+        tipoSelect.value = tipoSelecionado;
+      }
+      atualizarCampoDataEntrega();
+      tipoSelect.addEventListener('change', atualizarCampoDataEntrega);
+    }
+  });
+</script>
+{% endblock %}
