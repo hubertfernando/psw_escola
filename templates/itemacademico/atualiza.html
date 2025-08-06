@@ -1,26 +1,30 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Atualizar Item Acadêmico</title>
-</head>
-<body>
+{% extends "_base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}  {# Necessário para usar |crispy #}
 
-<div class="form-container" role="form" aria-label="Formulário de Atualização">
-    <h2>Atualizar Item Acadêmico</h2>
+{% block content %}
+<div class="container py-5">
+  <div class="card border-0 shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0">Formulário de Cadastro</h3>
+    </div>
 
-    <form method="POST" enctype="multipart/form-data">
+    <div class="card-body">
+      <form method="POST" enctype="multipart/form-data" aria-label="Formulário de Cadastro">
         {% csrf_token %}
+        {{ form|crispy }}
 
-        {{ form.as_p }}
+        <div class="mt-4 d-flex justify-content-between">
+          <a href="/itemacademico/" class="btn btn-secondary" aria-label="Cancelar cadastro">
+            <i class="bi bi-x-circle me-1"></i> Cancelar
+          </a>
 
-        <div class="form-buttons">
-            <button type="button" onclick="window.history.back();" aria-label="Cancelar">Cancelar</button>
-            <button type="submit" aria-label="Atualizar formulário">Atualizar</button>
+          <button type="submit" class="btn btn-success" aria-label="Enviar formulário">
+            <i class="bi bi-check-circle me-1"></i> Enviar
+          </button>
         </div>
-    </form>
+      </form>
+    </div>
+  </div>
 </div>
-
-</body>
-</html>
+{% endblock %}
