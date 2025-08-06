@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'disciplina',
     'aluno',
     'itemacademico',
+    'turma',
     'crispy_forms',
     'crispy_bootstrap5',
 ]

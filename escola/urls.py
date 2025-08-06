@@ -5,8 +5,7 @@ from django.conf.urls.static import static
 
 from disciplina import views as views_disciplina
 from aluno import views as views_aluno
-from itemacademico import views as views_itemacademico
-#from turma import views as views_turma
+from turma import views as views_turma
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -14,7 +13,8 @@ urlpatterns = [
     path('disciplina/', include('disciplina.urls')),
     path('aluno/', include('aluno.urls')),
     path('itemacademico/', include('itemacademico.urls')),
-    #path('turma/', include('turma.urls')),
+    path('turma/', include('turma.urls')),
+    path('turma/', include('turma.urls')),
 ]
 
 # arquivos de mídia (imagens enviadas pelos alunos, por exemplo)
