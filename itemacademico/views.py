@@ -100,13 +100,8 @@ def atualiza(request, id_itemacademico):
     return render(request, 'itemacademico/atualiza.html', {'form': form, 'item': instance})
 
 
-# Exclusão de atividade ou material
+# Exclusão direta com confirmação apenas via navegador
 def deleta(request, id_itemacademico):
     item = get_object_or_404(ItemAcademico, id=id_itemacademico)
-
-    if request.method == 'POST':
-        item.delete() # Ao deletar o ItemAcademico pai, o Django deleta as subclasses
-        return redirect('itemacademico:index')
-
-    # Correção: 'itemacademico' não está definido no contexto do template aqui
-    return render(request, 'itemacademico/deleta.html', {'item': item})
+    item.delete()  # Deleta o item diretamente, sem página de confirmação
+    return redirect('itemacademico:index')
