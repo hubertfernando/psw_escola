@@ -4,70 +4,20 @@
 
 {% block content %}
 <div class="container py-5">
-  <div class="card border-0 shadow-sm">
-    <div class="card-header bg-primary text-white">
-      <h3 class="mb-0">Cadastrar Item Acadêmico</h3>
-    </div>
-
+  <div class="card shadow-sm border-0">
     <div class="card-body">
-      <form method="POST" enctype="multipart/form-data">
+      <h2 class="mb-4 text-primary">Cadastrar Item Acadêmico</h2>
+
+      <form method="POST" enctype="multipart/form-data" aria-label="Formulário de Cadastro de Item Acadêmico">
         {% csrf_token %}
-        
-        {% if form.non_field_errors %}
-          <div class="alert alert-danger">
-            {% for error in form.non_field_errors %}
-              <p class="mb-0">{{ error }}</p>
-            {% endfor %}
-          </div>
-        {% endif %}
-
-        <div class="mb-3">
-          {{ form.tipo.label_tag }}
-          {{ form.tipo }}
-          {% for error in form.tipo.errors %}
-            <div class="text-danger small">{{ error }}</div>
-          {% endfor %}
-        </div>
-
-        <div class="mb-3">
-          {{ form.titulo.label_tag }}
-          {{ form.titulo }}
-          {% for error in form.titulo.errors %}
-            <div class="text-danger small">{{ error }}</div>
-          {% endfor %}
-        </div>
-
-        <div class="mb-3">
-          {{ form.descricao.label_tag }}
-          {{ form.descricao }}
-          {% for error in form.descricao.errors %}
-            <div class="text-danger small">{{ error }}</div>
-          {% endfor %}
-        </div>
-
-        <div class="mb-3">
-          {{ form.arquivo.label_tag }}
-          {{ form.arquivo }}
-          {% for error in form.arquivo.errors %}
-            <div class="text-danger small">{{ error }}</div>
-          {% endfor %}
-        </div>
-
-        {% if form.data_entrega %}
-          <div class="mb-3 campo-data-entrega">
-            {{ form.data_entrega.label_tag }}
-            {{ form.data_entrega }}
-            {% for error in form.data_entrega.errors %}
-              <div class="text-danger small">{{ error }}</div>
-            {% endfor %}
-          </div>
-        {% endif %}
+        {{ form|crispy }}
 
         <div class="mt-4 d-flex justify-content-between">
           <a href="/itemacademico/" class="btn btn-secondary" aria-label="Cancelar criação">
             <i class="bi bi-x-circle me-1"></i> Cancelar
           </a>
-          <button type="submit" class="btn btn-success" aria-label="Enviar item">
+
+          <button type="submit" class="btn btn-success" aria-label="Enviar formulário">
             <i class="bi bi-check-circle me-1"></i> Enviar
           </button>
         </div>
