@@ -1,24 +1,27 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Atualizar Dados</title>
-</head>
-<body>
+{% extends "_base.html" %}
+{% load crispy_forms_tags %}
 
-<div class="form-container" role="form" aria-label="Formulário de Atualização">
-    <h2>Atualizar Dados</h2>
-    <form method="POST" action="">
+{% block content %}
+<div class="container py-5">
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <h2 class="mb-4 text-primary">Atualizar Dados</h2>
+
+      <form method="POST" enctype="multipart/form-data" aria-label="Formulário de Atualização de Turma">
         {% csrf_token %}
-        
-        {{ form.as_p }} 
-        <div class="form-buttons">
-            <input type="button" value="Cancelar" onclick="window.history.back();" aria-label="Cancelar">
-            <input type="submit" value="Atualizar" aria-label="Atualizar formulário">
-        </div>
-    </form>
-</div>
+        {{ form|crispy }}
 
-</body>
-</html>
+        <div class="mt-4 d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" onclick="window.history.back();" aria-label="Cancelar">
+            <i class="bi bi-x-circle me-1"></i> Cancelar
+          </button>
+
+          <button type="submit" class="btn btn-primary" aria-label="Atualizar formulário">
+            <i class="bi bi-pencil-square me-1"></i> Atualizar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
