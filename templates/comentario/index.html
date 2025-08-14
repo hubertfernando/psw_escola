@@ -1,0 +1,86 @@
+{% extends "_base.html" %}
+{% block content %}
+<div class="container mt-4">
+
+    <h4 class="fw-bold mb-3">
+        Comentários 
+    </h4>
+
+    <!-- Botões principais -->
+    <div class="mb-4 d-flex gap-2 flex-wrap">
+        <a href="{% url 'comentario:cria' item.id %}" class="text-success text-decoration-none">
+            <i class="bi bi-plus-circle me-1"></i> Novo Comentário
+        </a>
+        <a href="{% url 'itemacademico:itens_por_disciplina' item.disciplina.id %}" class="text-secondary text-decoration-none">
+            <i class="bi bi-arrow-left me-1"></i> Voltar ao Item
+        </a>
+    </div>
+
+    {% if comentarios %}
+        <div class="list-group">
+            {% for comentario in comentarios %}
+                <div class="list-group-item border-0 mb-3 p-3 rounded bg-white">
+                    <!-- Cabeçalho do comentário -->
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <strong class="text-primary">{{ comentario.autor.username }}</strong>
+                            <small class="text-muted ms-2">{{ comentario.criado_em|date:"d/m/Y H:i" }}</small>
+                        </div>
+                        <div class="d-flex gap-2 align-items-center">
+                            <a href="{% url 'comentario:detalhe' comentario.id %}" class="text-info" title="Ver">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'comentario:cria' item.id %}?parent={{ comentario.id }}" class="text-primary" title="Responder">
+                                <i class="bi bi-reply"></i>
+                            </a>
+                            {% if comentario.autor == request.user %}
+                                <a href="{% url 'comentario:atualiza' comentario.id %}" class="text-warning" title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a href="{% url 'comentario:deleta' comentario.id %}" class="text-danger" onclick="return confirm('Confirma exclusão?')" title="Excluir">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Texto do comentário -->
+                    <p class="mb-3">{{ comentario.texto|linebreaks }}</p>
+
+                    <!-- Respostas -->
+                    {% if comentario.respostas.all %}
+                        <div class="ms-4 ps-3 border-start">
+                            {% for resposta in comentario.respostas.all %}
+                                <div class="p-2 rounded bg-white mb-2">
+                                    <div class="d-flex justify-content-between align-items-start mb-1">
+                                        <div>
+                                            <strong class="text-primary">{{ resposta.autor.username }}</strong>
+                                            <small class="text-muted ms-2">{{ resposta.criado_em|date:"d/m/Y H:i" }}</small>
+                                        </div>
+                                        <div class="d-flex gap-2 align-items-center">
+                                            <a href="{% url 'comentario:detalhe' resposta.id %}" class="text-info" title="Ver">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            {% if resposta.autor == request.user %}
+                                                <a href="{% url 'comentario:atualiza' resposta.id %}" class="text-warning" title="Editar">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                                <a href="{% url 'comentario:deleta' resposta.id %}" class="text-danger" onclick="return confirm('Confirma exclusão?')" title="Excluir">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <p class="mb-0">{{ resposta.texto|linebreaks }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted fst-italic">Nenhum comentário ainda.</p>
+    {% endif %}
+</div>
+{% endblock %}
