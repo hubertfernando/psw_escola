@@ -10,10 +10,12 @@
       <i class="bi bi-people-fill me-2"></i>Minhas Turmas
     </h2>
     <div class="d-flex gap-2 flex-wrap">
-      <a href="{% url 'turma:add-turma' %}" class="btn btn-success shadow-sm">
+      {% if perms.turma.add_turma %}
+      <a href="/turma/add/" class="btn btn-success shadow-sm">
         <i class="bi bi-plus-lg me-1"></i> Criar Turma
       </a>
-      <form class="d-flex" method="POST" action="{% url 'turma:entrar_turma' %}">
+      {% endif %}
+      <form class="d-flex" method="POST" action="/turma/entrar/">
         {% csrf_token %}
         <input
           name="codigo_convite"
@@ -39,32 +41,49 @@
     {% endfor %}
   {% endif %}
 
-  <!-- Lista de Turmas (Horizontal Style) -->
+  <!-- Lista de Turmas -->
   <div class="d-flex flex-column gap-3">
     {% for turma in turmas %}
-    <div class="card shadow-lg border-0 w-100" style="border-radius: 15px; overflow: hidden;">
+    <div
+      class="card shadow-lg border-0 w-100"
+      style="border-radius: 15px; overflow: hidden; cursor: pointer;"
+      onclick='window.location.href="/disciplina/?turma={{ turma.id }}";'
+    >
       <div class="row g-0">
-        <!-- Capa colorida -->
-        <div class="col-md-3" style="background: linear-gradient(135deg, #0d6efd, #0b5ed7); min-height: 150px;">
+        <!-- Capa -->
+        <div class="col-md-3"
+             style="background: linear-gradient(135deg, #0d6efd, #6610f2, #20c997); min-height: 150px;">
         </div>
+
         <!-- Conteúdo -->
         <div class="col-md-9 d-flex flex-column justify-content-between p-4">
           <div>
             <h4 class="fw-bold mb-1">{{ turma.get_ano_display }} - {{ turma.get_curso_display }}</h4>
             <p class="text-muted mb-0">Clique para acessar os conteúdos e atividades desta turma.</p>
           </div>
-          <div class="d-flex justify-content-end gap-2 mt-3">
-            <a href="{% url 'turma:detalhe-turma' turma.id %}" class="btn btn-outline-primary">
-                <i class="bi bi-eye me-1"></i> Entrar
-            </a>
-            <a href="{% url 'turma:edit-turma' turma.id %}" class="btn btn-outline-warning primary">
-                <i class="bi bi-pencil-square"></i>Editar
-            </a>
-            <a href="{% url 'turma:delete-turma' turma.id %}" class="btn btn-outline-danger" onclick="return confirm('Tem certeza que deseja excluir?');">
-                <i class="bi bi-trash"></i>Excluir
-            </a>
-        </div>
 
+          <!-- Botões -->
+          <div class="d-flex justify-content-end gap-2 mt-3">
+            <a href="/turma/{{ turma.id }}/"
+               class="btn btn-outline-info"
+               onclick="event.stopPropagation();">
+              <i class="bi bi-eye"></i> Detalhe
+            </a>
+            {% if perms.turma.change_turma %}
+            <a href="/turma/edit/{{ turma.id }}/"
+               class="btn btn-outline-warning"
+               onclick="event.stopPropagation();">
+              <i class="bi bi-pencil-square"></i> Editar
+            </a>
+            {% endif %}
+            {% if perms.turma.delete_turma %}
+            <a href="/turma/delete/{{ turma.id }}/"
+               class="btn btn-outline-danger"
+               onclick="event.stopPropagation(); return confirm('Tem certeza que deseja excluir?');">
+              <i class="bi bi-trash"></i> Excluir
+            </a>
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>
