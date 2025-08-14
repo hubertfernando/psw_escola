@@ -4,8 +4,7 @@ from django.contrib.auth.decorators import login_required
 from urllib.parse import urlparse, parse_qs
 from .models import Turma
 from .forms import TurmaForm
-
-
+from disciplina.models import Disciplina 
 
 @login_required
 def index(request):
@@ -17,10 +16,13 @@ def index(request):
 def detalhe(request, id_turma):
     turma = get_object_or_404(Turma, id=id_turma)
     link_convite_completo = request.build_absolute_uri(turma.get_link_convite())
+    alunos = turma.membros.all()  # pega os usuários relacionados à turma
     return render(request, 'turma/detalhe.html', {
         'turma': turma,
-        'link_convite_completo': link_convite_completo
+        'link_convite_completo': link_convite_completo,
+        'alunos': alunos,
     })
+
 
 @login_required
 def cria(request):
@@ -78,3 +80,12 @@ def entrar_por_codigo(request):
         return redirect('turma:index-turma')
 
     return redirect('turma:index-turma')
+
+@login_required
+def disciplinas_da_turma(request, id_turma):
+    turma = get_object_or_404(Turma, id=id_turma)
+    disciplinas = Disciplina.objects.filter(turma=turma)
+    return render(request, 'disciplina/index.html', {
+    'turma': turma,
+    'disciplinas': disciplinas
+})
