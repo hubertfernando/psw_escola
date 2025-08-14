@@ -2,70 +2,67 @@
 {% load static %}
 
 {% block content %}
-
 <div class="container mt-5">
-  <div class="card shadow-lg border-0">
-    <div class="card-body">
 
-      <!-- Título e botão Adicionar -->
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="text-primary mb-0">
-          <i class="bi bi-book-fill me-2"></i>Listagem de Disciplinas
-        </h2>
-        {% if perms.pessoa.add_pessoa %}
-        <a href="/disciplina/cria" class="btn btn-success shadow-sm">
-          <i class="bi bi-plus-lg me-2"></i>Adicionar Disciplina
-        </a>
-        {% endif %}
+  <!-- Cabeçalho e botão criar -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary mb-0">
+      <i class="bi bi-book-fill me-2"></i>
+      {% if turma %}
+        Disciplinas da Turma {{ turma.get_ano_display }} - {{ turma.get_curso_display }}
+      {% else %}
+        Listagem de Disciplinas
+      {% endif %}
+    </h2>
+    {% if perms.disciplina.add_disciplina %}
+    <a href="/disciplina/cria/?turma={{ turma.id }}" class="btn btn-success shadow-sm">
+      <i class="bi bi-plus-lg me-1"></i>Nova Disciplina
+    </a>
+    {% endif %}
+  </div>
+
+  <div class="d-flex flex-column gap-4">
+    {% for disciplina in disciplinas %}
+      <div
+        class="card shadow-sm rounded-4 d-flex flex-row align-items-center p-3"
+        style="cursor: pointer;"
+        onclick='window.location.href="{% url "itemacademico:itens_por_disciplina" disciplina.id %}";'
+      >
+        
+        <!-- Barra colorida esquerda -->
+        <div style="width: 120px; height: 80px; background: linear-gradient(135deg, #0d6efd, #6610f2, #20c997); border-radius: 0.75rem;"></div>
+        
+        <!-- Conteúdo principal -->
+        <div class="flex-grow-1 ps-4">
+          <h5 class="mb-1 fw-semibold">{{ disciplina.nome }}</h5>
+          <p class="text-muted mb-0">Carga Horária: {{ disciplina.carga_horaria }}</p>
+        </div>
+
+        <!-- Botões de ação -->
+        <div class="d-flex gap-2">
+          {% if perms.disciplina.view_disciplina %}
+          <a href="/disciplina/{{ disciplina.id }}/" class="btn btn-outline-secondary btn-sm me-1" title="Detalhar" onclick="event.stopPropagation();">
+              <i class="bi bi-eye"></i> Ver
+          </a>
+
+          <a href="/disciplina/atualiza/{{ disciplina.id }}/" class="btn btn-outline-warning btn-sm me-1" title="Editar" onclick="event.stopPropagation();">
+            <i class="bi bi-pencil-square"></i> Editar
+          </a>
+
+          <a href="/disciplina/delete/{{ disciplina.id }}/" class="btn btn-outline-danger btn-sm" title="Excluir"
+            onclick="event.stopPropagation(); return confirm('Tem certeza que deseja excluir esta disciplina?');">
+            <i class="bi bi-trash"></i> Excluir
+          </a>
+
+          {% endif %}
+        </div>
+
       </div>
-
-      <!-- Tabela responsiva -->
-      <div class="table-responsive">
-        <table class="table table-hover align-middle text-center table-bordered border-light shadow-sm" style="width: 100%;">
-          <thead class="table-primary">
-            <tr>
-              <th>Nome</th>
-              <th>Carga Horária</th>
-              {% if perms.disciplina.detail_disciplina %}<th>Detalhes</th>{% endif %}
-              {% if perms.disciplina.detail_disciplina %}<th>Atualizar</th>{% endif %}
-              {% if perms.disciplina.detail_disciplina %}<th>Deletar</th>{% endif %}
-            </tr>
-          </thead>
-          <tbody>
-            {% for disciplina in disciplinas %}
-            <tr>
-              <td>{{ disciplina.nome }}</td>
-              <td>{{ disciplina.carga_horaria }}</td>
-
-              {% if perms.disciplina.detail_disciplina %}
-              <td>
-                <a href="/disciplina/{{ disciplina.id }}/" class="btn btn-outline-info btn-sm">
-                  <i class="bi bi-eye"></i> Ver
-                </a>
-              </td>
-              <td>
-                <a href="/disciplina/atualiza/{{ disciplina.id }}/" class="btn btn-outline-warning btn-sm">
-                  <i class="bi bi-pencil-square"></i> Editar
-                </a>
-              </td>
-              <td>
-                <a href="/disciplina/delete/{{ disciplina.id }}/" class="btn btn-outline-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar esta disciplina?');">
-                  <i class="bi bi-trash"></i> Excluir
-                </a>
-              </td>
-              {% endif %}
-            </tr>
-            {% empty %}
-            <tr>
-              <td colspan="5" class="text-muted">Nenhuma disciplina cadastrada.</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+    {% empty %}
+      <div class="alert alert-info text-center rounded-4">
+        Nenhuma disciplina cadastrada.
       </div>
-
-    </div>
+    {% endfor %}
   </div>
 </div>
-
 {% endblock %}
