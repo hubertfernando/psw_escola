@@ -10,11 +10,11 @@ from turma import views as views_turma
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('conta/', include('django.contrib.auth.urls')),
-    path('disciplina/', include('disciplina.urls')),
+    path('disciplina/', include(('disciplina.urls', 'disciplina'), namespace='disciplina')),
     path('aluno/', include('aluno.urls')),
     path('itemacademico/', include('itemacademico.urls')),
     path('turma/', include('turma.urls')),
-    path('turma/', include('turma.urls')),
+    path('comentario/', include(('comentario.urls', 'comentario'), namespace='comentario')),
 ]
 
 # arquivos de mídia (imagens enviadas pelos alunos, por exemplo)
