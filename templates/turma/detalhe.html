@@ -44,17 +44,39 @@
         </table>
 
         {% if request.user == turma.lider %}
-        <hr />
         <div class="mb-3">
           <label for="linkConvite" class="form-label fw-semibold">Link de Convite</label>
           <div class="input-group">
             <input type="text" class="form-control" id="linkConvite" value="{{ link_convite_completo }}" readonly aria-label="Link de convite da turma" />
-            <button class="btn btn-outline-primary" type="button" id="btnCopyLink" aria-label="Copiar link de convite">
+            <button class="btn btn-outline-light text-primary border-primary" type="button" id="btnCopyLink" aria-label="Copiar link de convite">
               <i class="bi bi-clipboard"></i> Copiar
             </button>
           </div>
         </div>
         {% endif %}
+
+        <h3 class="mt-4">Alunos cadastrados</h3>
+
+        {% if alunos %}
+        <table class="table table-striped table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Nome</th>
+              <th>Username</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for aluno in alunos %}
+            <tr>
+              <td>{{ aluno.aluno.nome }}</td>
+              <td>{{ aluno.username }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %} 
+        <p class="text-muted fst-italic">Nenhum aluno cadastrado nesta turma.</p>
+        {% endif %} 
 
         <div class="mt-4 text-end">
           <a href="{% url 'turma:index-turma' %}" class="btn btn-secondary" aria-label="Voltar para lista de turmas">
