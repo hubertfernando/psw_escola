@@ -10,6 +10,7 @@
 
       <form method="POST" enctype="multipart/form-data" aria-label="Formulário de Cadastro de Item Acadêmico">
         {% csrf_token %}
+        <input type="hidden" name="disciplina" value="{{ disciplina.id }}">
         {{ form|crispy }}
 
         <div class="mt-4 d-flex justify-content-between">
