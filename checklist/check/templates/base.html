@@ -41,9 +41,6 @@
         <label for="id_data_entrega">Data de entrega:</label>
         {{ form.data_entrega }}
 
-        <label for="id_concluido">Concluído:</label>
-        {{ form.concluido }}
-
         <label for="id_prioridade">Prioridade (1 a 5):</label>
         {{ form.prioridade }}
 
@@ -63,13 +60,19 @@
     <ul>
         {% for item in checklists %}
             <li>
-                <strong>{{ item.titulo }}</strong> — {{ item.disciplina }} — 
-                entrega: {{ item.data_entrega }} —
-                {% if item.concluido %}✅ Concluído{% else %}❌ Pendente{% endif %} —
-                prioridade: {{ item.prioridade }}
+                <!-- Checkbox para marcar como concluído/pendente -->
+                <form method="post" action="{% url 'checklist_toggle' item.pk %}" class="inline-form">
+                    {% csrf_token %}
+                    <input type="checkbox" onchange="this.form.submit()" {% if item.concluido %}checked{% endif %}>
+                </form>
 
+                <!-- Texto do item -->
+                <strong {% if item.concluido %}style="text-decoration: line-through; color: gray;"{% endif %}>
+                    {{ item.titulo }}
+                </strong> — {{ item.disciplina }} — entrega: {{ item.data_entrega }} — prioridade: {{ item.prioridade }}
+
+                <!-- Botões de ação -->
                 [<a href="{% url 'checklist_edit_inline' item.pk %}">Editar</a>]
-
                 <form method="post" action="{% url 'checklist_delete_inline' item.pk %}" class="inline-form">
                     {% csrf_token %}
                     <button type="submit">Excluir</button>

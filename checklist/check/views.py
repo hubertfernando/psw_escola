@@ -31,3 +31,9 @@ def checklist_delete_inline(request, pk):
 def checklist_clear_form(request):
     return redirect('checklist_list')
 
+def checklist_toggle(request, pk):
+    checklist = get_object_or_404(Checklist, pk=pk)
+    checklist.alternar_status()
+    return redirect('checklist_list')
+
+
