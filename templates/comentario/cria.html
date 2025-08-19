@@ -1,0 +1,30 @@
+{% extends "_base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <h2 class="mb-4 text-primary">
+        {% if parent %}Responder a comentário{% else %}Novo comentário{% endif %}
+      </h2>
+
+      <form method="post" aria-label="Formulário de comentário">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <div class="mt-4 d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" onclick="window.history.back();" aria-label="Cancelar">
+            <i class="bi bi-x-circle me-1"></i> Cancelar
+          </button>
+
+          <button type="submit" class="btn btn-success" aria-label="Salvar comentário">
+            <i class="bi bi-check-circle me-1"></i> Salvar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

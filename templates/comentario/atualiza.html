@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Editar Comentário</h2>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="{% url 'comentario:index' comentario.item.id %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
