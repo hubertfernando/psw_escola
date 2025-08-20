@@ -1,0 +1,15 @@
+{% extends "_base.html" %}
+{% block title %}Excluir Atividade{% endblock %}
+
+{% block content %}
+<section class="page">
+  <h1>Excluir atividade</h1>
+  <p>Tem certeza de que deseja excluir <strong>{{ checklist }}</strong>?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+    <a href="{% url 'checklist_lista' %}" class="btn btn-light">Cancelar</a>
+  </form>
+</section>
+{% endblock %}

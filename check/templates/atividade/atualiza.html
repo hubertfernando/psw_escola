@@ -1,0 +1,16 @@
+{% extends "_base.html" %}
+{% block title %}Editar Atividade{% endblock %}
+
+{% block content %}
+<section class="page">
+  <h1>Editar atividade</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Salvar alterações</button>
+    <a href="{% url 'checklist_lista' %}" class="btn btn-light">Cancelar</a>
+  </form>
+</section>
+{% endblock %}
+
