@@ -46,8 +46,6 @@ class Turma(models.Model):
         blank=True
     )
 
-    class Meta:
-        db_table = "Turma"
 
     def __str__(self):
         return f"{self.get_ano_display()} - {self.get_curso_display()}"

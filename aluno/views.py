@@ -40,7 +40,7 @@ def atualiza(request, id_aluno):
             usuario_form.save()
             aluno_form.save()
             messages.success(request, "Aluno atualizado com sucesso!")
-            return redirect('index')
+            return redirect('index-aluno')
         else:
             messages.error(request, "Por favor, corrija os erros no formulário.")
     else:
