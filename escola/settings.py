@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'comentario',
     'crispy_forms',
     'crispy_bootstrap5',
+    'check',
 ]
 
 MIDDLEWARE = [
