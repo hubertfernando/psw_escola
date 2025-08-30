@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 class AlunoForm(UserCreationForm):
     class Meta:
         model = Aluno
-        fields = ['nome', 'telefone', 'matricula']
+        fields = ['username', 'nome', 'telefone', 'matricula']
 
 class AlunoEditForm(UserChangeForm):
     class Meta:

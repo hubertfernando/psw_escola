@@ -35,9 +35,9 @@ def cria(request):
         form = TurmaForm(request.POST)
         if form.is_valid():
             turma = form.save(commit=False)
-            turma.lider = request.user
+            turma.lider = request.user  
             turma.save()
-            turma.membros.add(request.user)  # adiciona o criador como membro
+            turma.membros.add(request.user)
 
             # adiciona usuário ao grupo Líder
             lider_group, _ = Group.objects.get_or_create(name="Líder")
