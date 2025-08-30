@@ -15,6 +15,9 @@ urlpatterns = [
     path('itemacademico/', include('itemacademico.urls')),
     path('turma/', include('turma.urls')),
     path('comentario/', include(('comentario.urls', 'comentario'), namespace='comentario')),
+    path('check/', include('check.urls')),
+
+
 ]
 
 # arquivos de mídia (imagens enviadas pelos alunos, por exemplo)
