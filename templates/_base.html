@@ -10,6 +10,48 @@
   <link rel="stylesheet" href="{% static 'css/styles.min.css' %}" />
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  
+  <style>
+    .message-item {
+        border-left: 3px solid;
+        margin-bottom: 5px;
+        padding: 10px 15px;
+    }
+
+    .message-item.alert-success {
+        border-left-color: #198754;
+        background-color: rgba(25, 135, 84, 0.1);
+    }
+
+    .message-item.alert-error,
+    .message-item.alert-danger {
+        border-left-color: #dc3545;
+        background-color: rgba(220, 53, 69, 0.1);
+    }
+
+    .message-item.alert-warning {
+        border-left-color: #ffc107;
+        background-color: rgba(255, 193, 7, 0.1);
+    }
+
+    .message-item.alert-info {
+        border-left-color: #0dcaf0;
+        background-color: rgba(13, 202, 240, 0.1);
+    }
+
+    .message-close {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+
+    .notification {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 8px;
+        height: 8px;
+    }
+  </style>
 </head>
 
 <body>
@@ -34,7 +76,7 @@
 
     <!-- Sidebar Start -->
     <aside class="left-sidebar">
-     {% include "_sidebar.html" %}
+      {% include "_sidebar.html" %}
     </aside>
     <!-- Sidebar End -->
 
@@ -52,16 +94,35 @@
             <li class="nav-item dropdown">
               <a class="nav-link " href="javascript:void(0)" id="drop1" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="ti ti-bell"></i>
-                <div class="notification bg-primary rounded-circle"></div>
+                <!-- Mostra badge apenas se houver mensagens -->
+                {% if messages %}
+                  <div class="notification bg-primary rounded-circle"></div>
+                {% endif %}
               </a>
               <div class="dropdown-menu dropdown-menu-animate-up" aria-labelledby="drop1">
                 <div class="message-body">
-                  <a href="javascript:void(0)" class="dropdown-item">Item 1</a>
-                  <a href="javascript:void(0)" class="dropdown-item">Item 2</a>
+                  <!-- Mensagens dentro do dropdown -->
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="dropdown-item message-item alert-{{ message.tags }}">
+                        <div class="d-flex align-items-center">
+                          <div class="flex-grow-1">
+                            {{ message }}
+                          </div>
+                          <button type="button" class="btn-close message-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    <div class="dropdown-item text-muted">
+                      Nenhuma notificação
+                    </div>
+                  {% endif %}
                 </div>
               </div>
             </li>
           </ul>
+          
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
               <li class="nav-item dropdown">
@@ -84,12 +145,11 @@
                     </a>
                     <!-- Botão de logout apenas para usuários logados no sistema -->
                     {% if user.is_authenticated %}
-                     <form action="{% url 'logout' %}" method="post">
+                      <form action="{% url 'logout' %}" method="post">
                         {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</button>
-                     </form>
+                        <button type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</button>
+                      </form>
                     {% endif %}
-
                   </div>
                 </div>
               </li>
@@ -108,6 +168,7 @@
     </div>
   </div>
 
+  <!-- Scripts -->
   <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
   <script src="{% static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'js/sidebarmenu.js' %}"></script>
@@ -115,7 +176,25 @@
   <script src="{% static 'libs/apexcharts/dist/apexcharts.min.js' %}"></script>
   <script src="{% static 'libs/simplebar/dist/simplebar.js' %}"></script>
   <script src="{% static 'js/dashboard.js' %}"></script>
-
+  
+  <!-- Custom Script for Messages -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Fechar mensagens ao clicar no botão
+      document.querySelectorAll('.message-close').forEach(button => {
+        button.addEventListener('click', function() {
+          this.closest('.message-item').remove();
+          
+          // Se não houver mais mensagens, mostra "Nenhuma notificação"
+          const messageBody = document.querySelector('.message-body');
+          if (messageBody.querySelectorAll('.message-item').length === 0) {
+            messageBody.innerHTML = '<div class="dropdown-item text-muted">Nenhuma notificação</div>';
+          }
+        });
+      });
+    });
+  </script>
+  
   <!-- solar icons -->
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
 </body>
