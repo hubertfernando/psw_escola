@@ -1,39 +1,16 @@
-from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.contrib.auth.models import User
 from .models import Aluno
+from django.forms import ModelForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-class AlunoCreationForm(UserCreationForm):
-    nome = forms.CharField(max_length=100)
-    telefone = forms.CharField(max_length=100)
-    matricula = forms.CharField(max_length=20)
 
-    class Meta:
-        model = User
-        fields = ['username', 'password1', 'password2', 'nome', 'telefone', 'matricula']
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        if commit:
-            user.save()
-            Aluno.objects.create(
-                user=user,
-                nome=self.cleaned_data['nome'],
-                telefone=self.cleaned_data['telefone'],
-                matricula=self.cleaned_data['matricula'],
-            )
-        return user
-
-class UsuarioEditForm(UserChangeForm):
-    class Meta:
-        model = User
-        fields = ['username']
-        
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields.pop('password', None)  # Remove o campo de senha
-
-class AlunoEditForm(forms.ModelForm):
+# Formulário para criar um novo usuário, utilizando o UserCreationForm do Django
+class AlunoForm(UserCreationForm):
     class Meta:
         model = Aluno
         fields = ['nome', 'telefone', 'matricula']
+
+class AlunoEditForm(UserChangeForm):
+    class Meta:
+        model = Aluno
+        fields = ['nome', 'telefone','matricula']
+        

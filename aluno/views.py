@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from .models import Aluno
-from .forms import AlunoCreationForm, UsuarioEditForm, AlunoEditForm
+from .forms import AlunoForm, AlunoEditForm
 
 @login_required
 def index(request):
@@ -19,12 +19,12 @@ def detalha(request, id_aluno):
 @login_required
 def cria(request):
     if request.method == 'POST':
-        form = AlunoCreationForm(request.POST)
+        form = AlunoForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("/aluno/")
     else:
-        form = AlunoCreationForm()
+        form = AlunoForm()
     return render(request, 'aluno/cria.html', {'form': form})
 
 @login_required
