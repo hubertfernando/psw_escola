@@ -31,7 +31,15 @@
     </div>
   </div>
 
- 
+  <!-- Mensagens -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
 
   <!-- Lista de Turmas -->
   <div class="d-flex flex-column gap-3">
@@ -61,13 +69,14 @@
                onclick="event.stopPropagation();">
               <i class="bi bi-eye"></i> Detalhe
             </a>
-            
-            {% if turma.lider == user %}
+            {% if perms.turma.change_turma %}
             <a href="/turma/edit/{{ turma.id }}/"
                class="btn btn-outline-warning"
                onclick="event.stopPropagation();">
               <i class="bi bi-pencil-square"></i> Editar
             </a>
+            {% endif %}
+            {% if perms.turma.delete_turma %}
             <a href="/turma/delete/{{ turma.id }}/"
                class="btn btn-outline-danger"
                onclick="event.stopPropagation(); return confirm('Tem certeza que deseja excluir?');">
