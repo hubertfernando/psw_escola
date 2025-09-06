@@ -10,6 +10,7 @@ class AlunoForm(UserCreationForm):
         fields = ['username', 'nome', 'telefone', 'matricula']
 
 class AlunoEditForm(UserChangeForm):
+    password = None 
     class Meta:
         model = Aluno
         fields = ['nome', 'telefone','matricula']
