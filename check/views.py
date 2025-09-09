@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from .models import Checklist
 from .forms import ChecklistForm
+from django.views.decorators.http import require_POST
+
 
 @login_required
 def checklist_lista(request):
@@ -38,7 +40,7 @@ def checklist_editar(request, pk):
     """Edita uma checklist existente"""
     checklist = get_object_or_404(Checklist, pk=pk)
     
-    # Verifica se o usuário tem permissão para editar
+    
     if checklist.usuario != request.user:
         return HttpResponseForbidden("Você não tem permissão para editar esta checklist.")
     
@@ -63,7 +65,7 @@ def checklist_detalhe(request, pk):
     """Exibe os detalhes de uma checklist"""
     checklist = get_object_or_404(Checklist, pk=pk)
     
-    # Verifica permissão
+   
     if checklist.usuario != request.user:
         return HttpResponseForbidden("Você não tem permissão para visualizar esta checklist.")
     
@@ -76,7 +78,7 @@ def checklist_deletar(request, pk):
     """Deleta uma checklist"""
     checklist = get_object_or_404(Checklist, pk=pk)
     
-    # Verifica permissão
+    
     if checklist.usuario != request.user:
         return HttpResponseForbidden("Você não tem permissão para deletar esta checklist.")
     
@@ -98,7 +100,7 @@ def checklist_alternar(request, pk):
     """Alterna o status de conclusão de uma checklist"""
     checklist = get_object_or_404(Checklist, pk=pk)
     
-    # Verifica permissão
+   
     if checklist.usuario != request.user:
         return HttpResponseForbidden("Você não tem permissão para modificar esta checklist.")
     
@@ -107,4 +109,34 @@ def checklist_alternar(request, pk):
     status = "concluída" if checklist.concluido else "pendente"
     messages.success(request, f'Checklist marcada como {status}!')
     
-    return redirect('checklist_lista')
+    return redirect('checklist_lista') 
+
+def checklist_calendario(request):
+    object_list = Checklist.objects.all()
+    return render(request, 'check/calendario.html'
+, {
+        'object_list': object_list
+    })
+
+
+@require_POST
+def checklist_atualiza_data(request, pk):
+    """
+    Recebe JSON { "date": "YYYY-MM-DD" } quando o usuário arrasta um evento.
+    Atualiza o campo data_entrega do Checklist.
+    """
+    checklist = get_object_or_404(Checklist, pk=pk)
+
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        nova_data_str = data.get('date')
+        if not nova_data_str:
+            return JsonResponse({'status': 'error', 'error': 'campo date ausente'}, status=400)
+
+        
+        nova_data = date.fromisoformat(nova_data_str)
+        checklist.data_entrega = nova_data
+        checklist.save(update_fields=['data_entrega', 'updated_at'])
+        return JsonResponse({'status': 'ok'})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'error': str(e)}, status=400)
