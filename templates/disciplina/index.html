@@ -14,8 +14,8 @@
         Listagem de Disciplinas
       {% endif %}
     </h2>
-    {% if perms.disciplina.add_disciplina %}
-    <a href="/disciplina/cria/?turma={{ turma.id }}" class="btn btn-success shadow-sm">
+    {% if turma.lider == request.user %}
+    <a href="{% url 'disciplina:cria_disciplina' turma.id %}" class="btn btn-success shadow-sm">
       <i class="bi bi-plus-lg me-1"></i>Nova Disciplina
     </a>
     {% endif %}

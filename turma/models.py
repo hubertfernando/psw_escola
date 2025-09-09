@@ -28,9 +28,9 @@ class Turma(models.Model):
 
     lider = models.ForeignKey(
         User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+        on_delete=models.CASCADE,  
+        null=False,                
+        blank=False,               
         related_name='lider_turmas'
     )
     membros = models.ManyToManyField(

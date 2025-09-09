@@ -9,6 +9,7 @@ from turma import views as views_turma
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views_disciplina.landing_page, name='landing'),  # raiz aponta para landing
     path('conta/', include('django.contrib.auth.urls')),
     path('disciplina/', include(('disciplina.urls', 'disciplina'), namespace='disciplina')),
     path('aluno/', include('aluno.urls')),

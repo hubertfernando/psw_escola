@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from .models import Aluno
-from .forms import AlunoCreationForm, UsuarioEditForm, AlunoEditForm
+from .forms import AlunoForm, AlunoEditForm
 
 @login_required
 def index(request):
@@ -19,37 +19,31 @@ def detalha(request, id_aluno):
 @login_required
 def cria(request):
     if request.method == 'POST':
-        form = AlunoCreationForm(request.POST)
+        form = AlunoForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("/aluno/")
     else:
-        form = AlunoCreationForm()
+        form = AlunoForm()
     return render(request, 'aluno/cria.html', {'form': form})
 
 @login_required
 def atualiza(request, id_aluno):
     aluno = get_object_or_404(Aluno, id=id_aluno)
-    user = aluno.user
 
     if request.method == 'POST':
-        usuario_form = UsuarioEditForm(request.POST, instance=user)
-        aluno_form = AlunoEditForm(request.POST, instance=aluno)
-
-        if usuario_form.is_valid() and aluno_form.is_valid():
-            usuario_form.save()
-            aluno_form.save()
+        form = AlunoEditForm(request.POST, instance=aluno)
+        if form.is_valid():
+            form.save()
             messages.success(request, "Aluno atualizado com sucesso!")
             return redirect('index-aluno')
         else:
             messages.error(request, "Por favor, corrija os erros no formulário.")
     else:
-        usuario_form = UsuarioEditForm(instance=user)
-        aluno_form = AlunoEditForm(instance=aluno)
+        form = AlunoEditForm(instance=aluno)
 
     return render(request, 'aluno/atualiza.html', {
-        'usuario_form': usuario_form,
-        'aluno_form': aluno_form,
+        'form': form,
     })
 
 @login_required
