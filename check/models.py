@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-from django.contrib.auth.models import User  # Adicione esta importação
+from django.contrib.auth.models import User  
 
 class Checklist(models.Model):
     PRIORIDADE_ALTA = 'alta'
@@ -31,9 +31,9 @@ class Checklist(models.Model):
     )
     concluido = models.BooleanField(default=False, verbose_name="Concluído")
     
-    # ADICIONE ESTE CAMPO - é crucial para o controle de permissões
+    
     usuario = models.ForeignKey(
-        User,  # Modelo de usuário do Django
+        User,  
         on_delete=models.CASCADE,
         verbose_name="Usuário",
         related_name='checklists'
