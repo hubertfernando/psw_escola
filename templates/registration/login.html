@@ -6,6 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Login</title>
+       
   <link rel="shortcut icon" href="{% static 'images/logos/favicon.png' %}" type="image/png">
   <link rel="stylesheet" href="{% static 'css/styles.min.css' %}">
   <style>
@@ -40,6 +41,9 @@
               {{ form|crispy }}
               <button type="submit" class="btn btn-primary w-100 mt-3">Entrar</button>
             </form>
+
+            <!-- Botão Criar Conta -->
+            <a href="{% url 'cria-aluno' %}" class="btn btn-secondary w-100 mt-2">Criar Conta</a>
 
           </div>
         </div>

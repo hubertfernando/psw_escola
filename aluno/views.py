@@ -16,7 +16,6 @@ def detalha(request, id_aluno):
     aluno = get_object_or_404(Aluno, id=id_aluno)
     return render(request, 'aluno/detalha.html', {'aluno': aluno})
 
-@login_required
 def cria(request):
     if request.method == 'POST':
         form = AlunoForm(request.POST)
@@ -49,6 +48,6 @@ def atualiza(request, id_aluno):
 @login_required
 def delete(request, id_aluno):
     aluno = get_object_or_404(Aluno, id=id_aluno)
-    aluno.user.delete()  # Apaga também o usuário vinculado
-    aluno.delete()
+    aluno.delete()  # já deleta o Aluno e o User herdado
     return HttpResponseRedirect("/aluno/")
+

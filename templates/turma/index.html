@@ -69,20 +69,20 @@
                onclick="event.stopPropagation();">
               <i class="bi bi-eye"></i> Detalhe
             </a>
-            {% if perms.turma.change_turma %}
+            
             <a href="/turma/edit/{{ turma.id }}/"
                class="btn btn-outline-warning"
                onclick="event.stopPropagation();">
               <i class="bi bi-pencil-square"></i> Editar
             </a>
-            {% endif %}
-            {% if perms.turma.delete_turma %}
+           
+            
             <a href="/turma/delete/{{ turma.id }}/"
                class="btn btn-outline-danger"
                onclick="event.stopPropagation(); return confirm('Tem certeza que deseja excluir?');">
               <i class="bi bi-trash"></i> Excluir
             </a>
-            {% endif %}
+            
           </div>
         </div>
       </div>
