@@ -1,64 +1,80 @@
 {% extends "_base.html" %}
 {% block title %}Checklist — Atividades{% endblock %}
+{% load static %}
 
 {% block content %}
-<section class="page">
-  <header class="page-header">
-    <h1>Checklist</h1>
-    <p class="subtitle">Lista de atividades</p>
-    <p>
-      <a href="{% url 'checklist_criar' %}" class="btn btn-primary">+ Novo</a>
-    </p>
-  </header>
+<div class="container mt-5">
+  <div class="card shadow-lg border-0">
+    <div class="card-body">
 
-  {% if object_list %}
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Atividade</th>
-          <th>Status</th>
-          <th>Data de Entrega</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for obj in object_list %}
-          <tr>
-            <!-- Atividade -->
-            <td>
-              <span class="{% if obj.concluido %}text-success text-decoration-line-through{% else %}text-warning{% endif %}">
-                {{ obj.titulo }}
-              </span>
-            </td>
+      
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary mb-0">
+          <i class="bi bi-ui-checks me-2"></i>Checklist
+        </h2>
+        <div>
+          <a href="{% url 'checklist_criar' %}" class="btn btn-success shadow-sm me-2">
+            <i class="bi bi-plus-lg me-2"></i> Novo
+          </a>
+          <a href="{% url 'checklist_calendario' %}" class="btn btn-outline-primary shadow-sm">
+            <i class="bi bi-calendar3 me-2"></i>Ver em Calendário
+          </a>
+        </div>
+      </div>
 
-            <!-- Status com checkbox -->
-            <td style="text-align: center;">
-              <form method="post" action="{% url 'checklist_alternar' obj.pk %}">
-                {% csrf_token %}
-                <input type="checkbox" onchange="this.form.submit()" {% if obj.concluido %}checked{% endif %}>
-              </form>
-            </td>
+      
+      <div class="table-responsive">
+        <table class="table table-hover align-middle text-center table-bordered border-light shadow-sm">
+          <thead class="table-primary">
+            <tr>
+              <th>Atividade</th>
+              <th>Status</th>
+              <th>Data de Entrega</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for obj in object_list %}
+            <tr>
+              <td class="text-start">
+                <span class="{% if obj.concluido %}text-success text-decoration-line-through{% else %}text-warning{% endif %}">
+                  {{ obj.titulo }}
+                </span>
+              </td>
 
-            <!-- Data -->
-            <td>
-              {{ obj.data_entrega|date:"d/m/Y" }}
-            </td>
+              <td style="text-align:center;">
+                <form method="post" action="{% url 'checklist_alternar' obj.pk %}">
+                  {% csrf_token %}
+                  <input type="checkbox" onchange="this.form.submit()" {% if obj.concluido %}checked{% endif %}>
+                </form>
+              </td>
 
-            <!-- Ações -->
-            <td>
-              <a href="{% url 'checklist_editar' obj.pk %}" class="btn btn-primary btn-sm">
-                <i class="bi bi-pencil-square"></i> Editar
-              </a>
-              <a href="{% url 'checklist_deletar' obj.pk %}" class="btn btn-danger btn-sm">
-                <i class="bi bi-trash"></i> Excluir
-              </a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% else %}
-    <p>Nenhuma atividade cadastrada.</p>
-  {% endif %}
-</section>
+              <td>{{ obj.data_entrega|date:"d/m/Y" }}</td>
+
+              <td>
+                
+                <a href="{% url 'checklist_detalhe' obj.pk %}" class="btn btn-outline-info btn-sm me-1">
+                  <i class="bi bi-info-circle"></i> Detalhes
+                </a>
+                
+                <a href="{% url 'checklist_editar' obj.pk %}" class="btn btn-outline-warning btn-sm me-1">
+                  <i class="bi bi-pencil-square"></i> Editar
+                </a>
+                <a href="{% url 'checklist_deletar' obj.pk %}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar esta atividade?');">
+                  <i class="bi bi-trash"></i> Excluir
+                </a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="4" class="text-muted">Nenhuma atividade cadastrada.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
 {% endblock %}

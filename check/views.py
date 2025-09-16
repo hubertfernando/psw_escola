@@ -5,6 +5,8 @@ from django.contrib import messages
 from .models import Checklist
 from .forms import ChecklistForm
 from django.views.decorators.http import require_POST
+from django.urls import reverse
+from django.core.serializers.json import DjangoJSONEncoder
 import json
 from datetime import date
 
@@ -25,7 +27,7 @@ def checklist_criar(request):
         form = ChecklistForm(request.POST)
         if form.is_valid():
             checklist = form.save(commit=False)
-            checklist.usuario = request.user  # Associa ao usuário logado
+            checklist.usuario = request.user  
             checklist.save()
             return redirect('checklist_lista')
     else:
@@ -109,10 +111,33 @@ def checklist_alternar(request, pk):
     return redirect('checklist_lista') 
 
 
+@login_required
 def checklist_calendario(request):
-    object_list = Checklist.objects.all()
-    return render(request, 'check/calendario.html', {
-        'object_list': object_list
+    """Renderiza o calendário com eventos em JSON"""
+    qs = Checklist.objects.filter(usuario=request.user)
+    events = []
+
+    for obj in qs:
+        if obj.prioridade == 5:
+            color = "#dc3545"
+        elif obj.prioridade == 4:
+            color = "#fd7e14"
+        elif obj.prioridade == 3:
+            color = "#ffc107"
+        elif obj.prioridade == 2:
+            color = "#0d6efd"
+        else:
+            color = "#198754"
+
+        events.append({
+            "title": obj.titulo,
+            "start": obj.data_entrega.strftime("%Y-%m-%d") if obj.data_entrega else None,
+            "url": reverse("checklist_detalhe", args=[obj.pk]),
+            "color": color,
+        })
+
+    return render(request, "check/calendario.html", {
+        "events": json.dumps(events, cls=DjangoJSONEncoder)
     })
 
 

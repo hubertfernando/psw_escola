@@ -12,7 +12,7 @@ class ChecklistForm(forms.ModelForm):
     
     class Meta:
         model = Checklist
-        # NÃO inclua 'usuario' aqui - ele será definido automaticamente na view
+        
         fields = ['titulo', 'descricao', 'disciplina', 'data_entrega', 'prioridade']
         widgets = {
             'titulo': forms.TextInput(attrs={'class': 'form-control'}),
@@ -28,7 +28,7 @@ class ChecklistForm(forms.ModelForm):
             'prioridade': 'Nível de Prioridade',
         }
     
-    # Adicione validação personalizada se necessário
+
     def clean_data_entrega(self):
         data = self.cleaned_data.get('data_entrega')
         from django.utils import timezone

@@ -9,4 +9,6 @@ urlpatterns = [
     path('deletar/<int:pk>/', views.checklist_deletar, name='checklist_deletar'),
     path('cancelar/', views.checklist_cancelar, name='checklist_cancelar'),
     path('alternar/<int:pk>/', views.checklist_alternar, name='checklist_alternar'),
+    path('calendario/', views.checklist_calendario, name='checklist_calendario'),
+    path('atualiza-data/<int:pk>/', views.checklist_atualiza_data, name='checklist_atualiza_data'),
 ]
