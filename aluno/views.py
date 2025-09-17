@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 
 from .models import Aluno
@@ -12,6 +12,7 @@ def index(request):
     return render(request, 'aluno/index.html', {'alunos': alunos})
 
 @login_required
+@permission_required
 def detalha(request, id_aluno):
     aluno = get_object_or_404(Aluno, id=id_aluno)
     return render(request, 'aluno/detalha.html', {'aluno': aluno})
@@ -26,6 +27,7 @@ def cria(request):
         form = AlunoForm()
     return render(request, 'aluno/cria.html', {'form': form})
 
+@permission_required
 @login_required
 def atualiza(request, id_aluno):
     aluno = get_object_or_404(Aluno, id=id_aluno)
@@ -45,6 +47,7 @@ def atualiza(request, id_aluno):
         'form': form,
     })
 
+@permission_required
 @login_required
 def delete(request, id_aluno):
     aluno = get_object_or_404(Aluno, id=id_aluno)

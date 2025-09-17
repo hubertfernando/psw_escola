@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from urllib.parse import urlparse, parse_qs
 from .models import Turma
 from .forms import TurmaForm
@@ -38,6 +38,7 @@ def cria(request):
         form = TurmaForm()
     return render(request, 'turma/cria.html', {'form': form})
 
+@permission_required
 @login_required
 def atualiza(request, id_turma):
     turma = get_object_or_404(Turma, pk=id_turma)
@@ -50,6 +51,7 @@ def atualiza(request, id_turma):
         form = TurmaForm(instance=turma)
     return render(request, 'turma/atualiza.html', {'form': form})
 
+@permission_required
 @login_required
 def deleta(request, id_turma):
     turma = get_object_or_404(Turma, id=id_turma)
