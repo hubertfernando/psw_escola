@@ -40,7 +40,7 @@
 
         <!-- Botões de ação -->
         <div class="d-flex gap-2">
-          {% if perms.disciplina.view_disciplina %}
+  
           <a href="/disciplina/{{ disciplina.id }}/" class="btn btn-outline-secondary btn-sm me-1" title="Detalhar" onclick="event.stopPropagation();">
               <i class="bi bi-eye"></i> Ver
           </a>
@@ -54,7 +54,6 @@
             <i class="bi bi-trash"></i> Excluir
           </a>
 
-          {% endif %}
         </div>
 
       </div>

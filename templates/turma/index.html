@@ -69,20 +69,22 @@
                onclick="event.stopPropagation();">
               <i class="bi bi-eye"></i> Detalhe
             </a>
-            
+
+            {% comment %} Apenas o líder pode editar/excluir {% endcomment %}
+            {% if turma.lider == request.user %}
             <a href="/turma/edit/{{ turma.id }}/"
                class="btn btn-outline-warning"
                onclick="event.stopPropagation();">
               <i class="bi bi-pencil-square"></i> Editar
             </a>
-           
-            
+
             <a href="/turma/delete/{{ turma.id }}/"
                class="btn btn-outline-danger"
                onclick="event.stopPropagation(); return confirm('Tem certeza que deseja excluir?');">
               <i class="bi bi-trash"></i> Excluir
             </a>
-            
+            {% endif %}
+
           </div>
         </div>
       </div>

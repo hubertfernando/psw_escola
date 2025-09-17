@@ -1,26 +1,32 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.models import Permission
 from urllib.parse import urlparse, parse_qs
 from .models import Turma
 from .forms import TurmaForm
 from disciplina.models import Disciplina 
 
+
 @login_required
 def index(request):
     turmas = Turma.objects.filter(membros=request.user)
-    return render(request, 'turma/index.html', {'turmas': turmas})
+    return render(request, 'turma/index.html', {
+        'turmas': turmas,
+        'request': request,  # necessário para template
+    })
 
 
 @login_required
 def detalhe(request, id_turma):
     turma = get_object_or_404(Turma, id=id_turma)
     link_convite_completo = request.build_absolute_uri(turma.get_link_convite())
-    alunos = turma.membros.all()  # pega os usuários relacionados à turma
+    alunos = turma.membros.all()
     return render(request, 'turma/detalhe.html', {
         'turma': turma,
         'link_convite_completo': link_convite_completo,
         'alunos': alunos,
+        'request': request,
     })
 
 
@@ -32,40 +38,46 @@ def cria(request):
             turma = form.save(commit=False)
             turma.lider = request.user
             turma.save()
-            turma.membros.add(request.user)  # adiciona o criador como membro
-            return HttpResponseRedirect("/turma/")
+            turma.membros.add(request.user)
+
+            # 🔹 Adiciona permissões oficiais do Django ao líder
+            perm_change = Permission.objects.get(codename='change_turma')
+            perm_delete = Permission.objects.get(codename='delete_turma')
+            request.user.user_permissions.add(perm_change, perm_delete)
+            request.user.refresh_from_db()  # garante que as permissões sejam reconhecidas imediatamente
+
+            return redirect("/turma/")
     else:
         form = TurmaForm()
     return render(request, 'turma/cria.html', {'form': form})
 
-@permission_required
+
 @login_required
+@permission_required('turma.change_turma', raise_exception=True)
 def atualiza(request, id_turma):
     turma = get_object_or_404(Turma, pk=id_turma)
-    if request.method == 'POST':
-        form = TurmaForm(request.POST, instance=turma)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect("/turma/")
-    else:
-        form = TurmaForm(instance=turma)
+    form = TurmaForm(request.POST or None, instance=turma)
+    if form.is_valid():
+        form.save()
+        return redirect("/turma/")
     return render(request, 'turma/atualiza.html', {'form': form})
 
-@permission_required
+
 @login_required
+@permission_required('turma.delete_turma', raise_exception=True)
 def deleta(request, id_turma):
-    turma = get_object_or_404(Turma, id=id_turma)
+    turma = get_object_or_404(Turma, pk=id_turma)
     turma.delete()
-    return HttpResponseRedirect('/turma/')
+    return redirect('/turma/')
+
 
 @login_required
 def entrar_por_codigo(request):
     if request.method == 'POST':
         codigo = request.POST.get('codigo_convite', '').strip()
 
-        # Extrai código do link completo, se for o caso
+        # Extrai código do link completo, se necessário
         if codigo.startswith('http'):
-            from urllib.parse import urlparse, parse_qs
             url_parts = urlparse(codigo)
             query_params = parse_qs(url_parts.query)
             codigo_lista = query_params.get('codigo')
@@ -78,16 +90,17 @@ def entrar_por_codigo(request):
         if request.user not in turma.membros.all():
             turma.membros.add(request.user)
 
-        # Redireciona para o index (listagem), sem argumentos extras
         return redirect('turma:index-turma')
 
     return redirect('turma:index-turma')
+
 
 @login_required
 def disciplinas_da_turma(request, id_turma):
     turma = get_object_or_404(Turma, id=id_turma)
     disciplinas = Disciplina.objects.filter(turma=turma)
     return render(request, 'disciplina/index.html', {
-    'turma': turma,
-    'disciplinas': disciplinas
-})
+        'turma': turma,
+        'disciplinas': disciplinas,
+        'request': request,
+    })
